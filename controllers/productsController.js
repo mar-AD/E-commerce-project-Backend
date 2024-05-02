@@ -1,9 +1,9 @@
 const express = require("express");
-const product = require("../models/Products");
-const subcategories = require("../models/Subcategories");
+const Product = require("../models/products");
+const Subcategories = require("../models/subcategories");
 const mongoose = require("mongoose");
 const xss = require("xss");
-const validateUserInput = require("../middlewares/ValidationMiddleware");
+const validateUserInput = require("../middlewares/validationMiddleware");
 
 // create products ==========================
 
@@ -39,16 +39,16 @@ async function createProduct(req, res) {
     if (validationErrors.length > 0) {
       return res.status(400).json({ err: validationErrors });
     }
-    const findProduct = await product.findOne({ sku: sku });
+    const findProduct = await Product.findOne({ sku: sku });
     if (findProduct) {
       return res.status(401).json({ error: "This product already exists" });
     }
 
-    const subcategory = await subcategories.findOne({ _id: subcategoryID });
+    const subcategory = await Subcategories.findOne({ _id: subcategoryID });
     if (!subcategory) {
       return res.status(404).json("This subcategory is not found");
     }
-    const creation = new product({
+    const creation = new Product({
       sku: skuu,
       product_image: productImage,
       product_name: product_name,
@@ -76,11 +76,11 @@ async function findProducts(req, res) {
     // const page = req.query.page || 1;
     const query = req.query.query || "";
     // const perPage = 3;
-    const searchAll = await product
+    const searchAll = await Product
       .aggregate([
         // {$skip:(page - 1) * perPage},
         // {$limit: perPage},
-        {$match:{product_name:{$regex: query, $options:'i'}}},
+        { $match: { product_name: { $regex: query, $options: "i" } } },
         {
           $lookup: {
             from: "subcategories",
@@ -116,7 +116,7 @@ async function findProducts(req, res) {
             discount_price: 1,
             options: 1,
             active: 1,
-            createdAt:1
+            createdAt: 1,
           },
         },
       ])
@@ -137,7 +137,7 @@ async function getProductById(req, res) {
   try {
     const Idd = req.params.id;
     const productId = new mongoose.Types.ObjectId(Idd);
-    const findPro = await product
+    const findPro = await Product
       .aggregate([
         { $match: { _id: productId } },
         {
@@ -202,13 +202,13 @@ async function updateProduct(req, res) {
       discount_price: discountPrice,
       options: options,
     };
-    
+
     if (req.file) {
       updateData.product_image = req.file.path;
     }
 
     const proId = req.params.id;
-    const UpdateProduct = await product.findByIdAndUpdate(proId, updateData);
+    const UpdateProduct = await Product.findByIdAndUpdate(proId, updateData);
 
     if (!UpdateProduct) {
       res.status(404).json("Product not found");
@@ -220,12 +220,11 @@ async function updateProduct(req, res) {
   }
 }
 
-
 //delete product by id================================
 async function removeProduct(req, res) {
   try {
     const pId = req.params.id;
-    const isThere = await product.findByIdAndRemove(pId);
+    const isThere = await Product.findByIdAndRemove(pId);
     if (!isThere) {
       res.status(404).json("this product is not exicte");
     } else {

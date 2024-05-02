@@ -30,22 +30,22 @@ async function connected() {
 }
 connected();
 
-const customers = require("./routes/Customers/CustomerRoutes");
+const customers = require("./routes/customers/customerRoutes");
 app.use("/v1", customers);
 
 const user = require("./routes/Users/usersRoutes");
 app.use("/v1", user);
 
-const categories = require("./routes/Categories/categoriesRoutes");
+const categories = require("./routes/categories/categoriesRoutes");
 app.use("/v1", categories);
 
-const subcategories = require("./routes/Subcategories/SubcategoryRouter");
+const subcategories = require("./routes/subcategories/subcategoryRouter");
 app.use("/v1", subcategories);
 
-const orders = require("./routes/Orders/OrdersRoutes");
+const orders = require("./routes/orders/ordersRoutes");
 app.use("/v1", orders);
 
-const products = require("./routes/Products/ProductsRouter");
+const products = require("./routes/products/productsRouter");
 app.use("/v1", products);
 
 mongoose.connection.on("connected", () => {

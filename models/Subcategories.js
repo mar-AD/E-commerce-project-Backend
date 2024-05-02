@@ -17,6 +17,6 @@ const subcategoriesSchema = new mongoose.Schema({
   },
 });
 
-const Subcategories = mongoose.model("Subcategories", subcategoriesSchema);
+const subcategories = mongoose.model("Subcategories", subcategoriesSchema);
 
-module.exports = Subcategories;
+module.exports = subcategories;

@@ -1,10 +1,10 @@
 const express = require("express");
-const Customer = require("../models/Customers");
+const Customer = require("../models/customers");
 const xss = require("xss");
 const bcrypt = require("bcrypt");
-const validationCustomer = require("../middlewares/ValidationMiddleware");
+const validationCustomer = require("../middlewares/validationMiddleware");
 const jwt = require("jsonwebtoken");
-const sendEmail = require("../middlewares/EmailSender");
+const sendEmail = require("../middlewares/emailSender");
 
 const secretKey = process.env.TOKEN_KEY;
 const refreshKey = process.env.REFRESH_KEY;
@@ -115,8 +115,7 @@ async function searchCustomer(req, res) {
   try {
     const customers = await Customer.find({
       first_name: new RegExp(query, "i"),
-    })
-      .sort({ createdAt: sort });
+    }).sort({ createdAt: sort });
     res.json(customers);
   } catch (error) {
     res.status(500).json({ error: error });
@@ -142,7 +141,7 @@ async function validateCustomer(req, res) {
       if (customers._id) {
         customers.valid_account = true;
         customers.save();
-        res.redirect('http://localhost:5173/login')
+        res.redirect("http://localhost:5173/login");
       }
     }
   } catch (error) {
@@ -219,13 +218,16 @@ async function profileCustomer(req, res) {
 
 //=========================== updateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 async function updateIdCustomer(req, res) {
-  const customerId =req.params.id;
+  const customerId = req.params.id;
   const { old_password, new_password, first_name, last_name, email } = req.body;
 
   try {
     const customer = await Customer.findById(customerId);
 
-    const isPasswordValid = await bcrypt.compare(old_password, customer.password);
+    const isPasswordValid = await bcrypt.compare(
+      old_password,
+      customer.password
+    );
 
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid old password" });
@@ -250,14 +252,14 @@ async function updateIdCustomer(req, res) {
   }
 }
 
-async function allCustomer(req,res){
+async function allCustomer(req, res) {
   try {
     const customer = await Customer.countDocuments({});
     res.json({ count: customer });
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
-  } 
+  }
 }
 
 module.exports = {
@@ -271,6 +273,4 @@ module.exports = {
   profileCustomer: profileCustomer,
   updateIdCustomer: updateIdCustomer,
   allCustomer: allCustomer,
-
 };
-

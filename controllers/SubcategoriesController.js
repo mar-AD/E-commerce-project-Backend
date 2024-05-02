@@ -1,9 +1,9 @@
-const express = require("express");
+
 const mongoose = require("mongoose");
 
-const subcategories = require("../models/Subcategories");
-const categories = require("../models/Categories");
-const products = require("../models/Products")
+const subcategories = require("../models/subcategories");
+const categories = require("../models/categories");
+const products = require("../models/products");
 require("dotenv").config();
 const secretKey = process.env.TOKEN_KEY;
 const refreshKey = process.env.REFRESH_KEY;
@@ -127,7 +127,7 @@ async function updateSubcategory(req, res) {
 
     const categoryExists = await categories.findById(categoryId);
     if (!categoryExists) {
-      return res.status(404).json('No category with that ID found');
+      return res.status(404).json("No category with that ID found");
     }
 
     const updatedSubcategory = await subcategories.findByIdAndUpdate(
@@ -141,9 +141,9 @@ async function updateSubcategory(req, res) {
     );
 
     if (!updatedSubcategory) {
-      return res.status(404).json('No subcategory with that ID found');
+      return res.status(404).json("No subcategory with that ID found");
     } else {
-      res.status(200).json('The subcategory has been updated successfully');
+      res.status(200).json("The subcategory has been updated successfully");
     }
   } catch (error) {
     console.error(error);
@@ -151,9 +151,7 @@ async function updateSubcategory(req, res) {
   }
 }
 
-
 //delete subcategoreis by ID ============================
-
 
 // const Subcategory = require('../models/subcategory');
 // const Product = require('../models/product');
@@ -163,16 +161,20 @@ async function deleteSub(req, res) {
     const subcategoryId = req.params.id;
     const subcategory = await subcategories.findById(subcategoryId);
     if (!subcategory) {
-      return res.status(404).json('This subcategory does not exist');
+      return res.status(404).json("This subcategory does not exist");
     }
 
-    const productsAttached = await products.find({ subcategory_id: subcategoryId });
+    const productsAttached = await products.find({
+      subcategory_id: subcategoryId,
+    });
 
     if (productsAttached.length > 0) {
-      return res.status(400).json("Products are attached, cannot delete this subcategory");
+      return res
+        .status(400)
+        .json("Products are attached, cannot delete this subcategory");
     }
     await subcategories.findByIdAndRemove(subcategoryId);
-    
+
     res.status(200).json("Subcategory deleted successfully");
   } catch (error) {
     console.error(error);
@@ -184,6 +186,6 @@ module.exports = {
   creatSubcategory: creatSubcategory,
   searchForSubcategory: searchForSubcategory,
   getById: getById,
-  updateSubcategory:updateSubcategory,
-  deleteSub:deleteSub
+  updateSubcategory: updateSubcategory,
+  deleteSub: deleteSub,
 };

@@ -1,17 +1,25 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const productsController = require('../../controllers/productsController')
-const AMauthorization = require('../../middlewares/AuthAM')
-const upload = require('../../middlewares/Cloudinary')
+const productsController = require("../../controllers/productsController");
+const AMauthorization = require("../../middlewares/authAM");
+const upload = require("../../middlewares/cloudinary");
 
-router.post('/products',upload.single('product_image'), productsController.createProduct)
+router.post(
+  "/products",
+  upload.single("product_image"),
+  productsController.createProduct
+);
 
-router.get('/allproducts', productsController.findProducts)
+router.get("/allproducts", productsController.findProducts);
 
-router.get('/products/:id', productsController.getProductById)
+router.get("/products/:id", productsController.getProductById);
 
-router.patch('/products/:id',upload.single('productImage'), productsController.updateProduct)
+router.patch(
+  "/products/:id",
+  upload.single("productImage"),
+  productsController.updateProduct
+);
 
-router.delete('/products/:id', productsController.removeProduct)
+router.delete("/products/:id", productsController.removeProduct);
 
-module.exports = router
+module.exports = router;
