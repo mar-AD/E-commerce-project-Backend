@@ -33,7 +33,7 @@ connected();
 const customers = require("./routes/customers/customerRoutes");
 app.use("/v1", customers);
 
-const user = require("./routes/Users/usersRoutes");
+const user = require("./routes/users/usersRoutes");
 app.use("/v1", user);
 
 const categories = require("./routes/categories/categoriesRoutes");
