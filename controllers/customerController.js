@@ -220,43 +220,35 @@ async function profileCustomer(req, res) {
 async function updateIdCustomer(req, res) {
   const customerId = req.params.id;
   const { old_password, new_password, first_name, last_name, email } = req.body;
-  let updatedData = { first_name, last_name, email, customer_image };
-
-  if (req.file) {
-    updatedData.customer_image = req.file.path;
-  }
 
   try {
     const customer = await Customer.findById(customerId);
 
-    if (!customer) {
-      return res.status(404).json({ error: "Customer not found" });
+    const isPasswordValid = await bcrypt.compare(
+      old_password,
+      customer.password
+    );
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid old password" });
     }
 
-    if (old_password) { 
-      const isPasswordValid = await bcrypt.compare(old_password, customer.password);
+    const hashedNewPassword = await bcrypt.hash(new_password, 10);
 
-      if (!isPasswordValid) {
-        return res.status(401).json({ error: "Invalid old password" });
-      }
-    }
-
-    if (new_password) {
-      const hashedNewPassword = await bcrypt.hash(new_password, 10);
-      customer.password = hashedNewPassword;
-    }
-
-    Object.assign(customer, updatedData); 
+    customer.first_name = first_name;
+    customer.last_name = last_name;
+    customer.email = email;
+    customer.password = hashedNewPassword;
 
     await customer.save();
 
-    const { _id, first_name, last_name, email, customer_image, valid_account, active } = customer;
-    res.json({ _id, first_name, last_name, email, customer_image, valid_account, active });
+    customer.valid_account = true;
+    customer.active = true;
 
-    console.log("Customer updated:", customer);
+    res.json(customer);
+    console.log(customer);
   } catch (error) {
-    console.error("Error updating customer:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: error.message });
   }
 }
 
