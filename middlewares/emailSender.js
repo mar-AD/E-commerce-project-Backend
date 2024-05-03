@@ -25,7 +25,7 @@ function sendWelcomeEmail(id, email, password) {
             <p style="color: #555;"><strong>Email:</strong> ${email}</p>
             <p style="color: #555;"><strong>Password:</strong> ${password}</p>
             <p style="color: #555;">Please do not share your login information with anyone.</p>
-            <p style="color: #555;">Click <a href="http://localhost:7000/v1/customers/validate/${id}" style="color: #007BFF; text-decoration: none; font-weight: bold;">here</a> to log in to your account.</p>
+            <p style="color: #555;">Click <a href="https://e-commerce-project-backend-yec6.onrender.com/v1/customers/validate/${id}" style="color: #007BFF; text-decoration: none; font-weight: bold;">here</a> to log in to your account.</p>
             </div>
         `,
     };
