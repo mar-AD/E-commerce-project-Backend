@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const subcategoryController = require("../../controllers/subcategoriesController");
-const AMauthorization = require("../../middlewares/authAM");
+const subcategoryController = require("../controllers/subcategoriesController.js");
+const AMauthorization = require("../middlewares/authAM.js");
 
 router.post("/Subcategories", subcategoryController.creatSubcategory);
 

@@ -1,9 +1,9 @@
 const express = require('express');
 const xss = require("xss");
 const bcrypt = require('bcrypt');
-const users = require('../models/Users')
-const validateUserInput = require('../middlewares/ValidationMiddleware')
-const sendEmail = require('../middlewares/EmailSender');
+const users = require('../models/users.js')
+const validateUserInput = require('../middlewares/validationMiddleware.js')
+const sendEmail = require('../middlewares/emailSender.js');
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
 const secretKey = process.env.TOKEN_KEY;

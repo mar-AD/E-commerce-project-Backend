@@ -1,6 +1,6 @@
 const express = require("express");
-const Categorie = require("../models/categories");
-const Subcategories = require("../models/subcategories");
+const Categorie = require("../models/categories.js");
+const Subcategories = require("../models/subcategories.js");
 
 async function createCategories(req, res) {
   try {

@@ -1,10 +1,10 @@
 const express = require("express");
-const Customer = require("../models/customers");
+const Customer = require("../models/customers.js");
 const xss = require("xss");
 const bcrypt = require("bcrypt");
-const validationCustomer = require("../middlewares/validationMiddleware");
+const validationCustomer = require("../middlewares/validationMiddleware.js");
 const jwt = require("jsonwebtoken");
-const sendEmail = require("../middlewares/emailSender");
+const sendEmail = require("../middlewares/emailSender.js");
 
 const secretKey = process.env.TOKEN_KEY;
 const refreshKey = process.env.REFRESH_KEY;

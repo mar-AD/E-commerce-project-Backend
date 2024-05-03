@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const userControllers = require('../../controllers/userController')
-const adminAuthorization = require('../../middlewares/Auth')
-const AMauthorization = require('../../middlewares/AuthAM')
-const upload = require('../../middlewares/Cloudinary')
+const userControllers = require('../controllers/userController.js')
+const adminAuthorization = require('../middlewares/Auth.js')
+const AMauthorization = require('../middlewares/authAM.js')
+const upload = require('../middlewares/cloudinary.js')
 
 
 router.post ('/users',upload.single('user_image'), userControllers.createUser)

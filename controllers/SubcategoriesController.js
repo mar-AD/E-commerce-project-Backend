@@ -1,9 +1,9 @@
 
 const mongoose = require("mongoose");
 
-const subcategories = require("../models/subcategories");
-const categories = require("../models/categories");
-const products = require("../models/products");
+const subcategories = require("../models/subcategories.js");
+const categories = require("../models/categories.js");
+const products = require("../models/products.js");
 require("dotenv").config();
 const secretKey = process.env.TOKEN_KEY;
 const refreshKey = process.env.REFRESH_KEY;

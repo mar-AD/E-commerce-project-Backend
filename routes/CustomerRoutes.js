@@ -1,8 +1,8 @@
 const express = require("express");
-const customerRoute = require("../../controllers/customerController");
+const customerRoute = require("../controllers/customerController.js");
 const router = express.Router();
-const AMauthorization = require("../../middlewares/authAM");
-const upload = require("../../middlewares/cloudinary");
+const AMauthorization = require("../middlewares/authAM.js");
+const upload = require("../middlewares/cloudinary.js");
 
 router.post(
   "/customers",

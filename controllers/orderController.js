@@ -1,8 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const Customer = require("../models/customers");
-const Order = require("../models/orders");
+const Customer = require("../models/customers.js");
+const Order = require("../models/orders.js");
 
 require("dotenv").config();
 const secretKey = process.env.TOKEN_KEY;
@@ -95,7 +95,7 @@ async function allOrder(req, res) {
 
 //get Order by ID ============================
 
-async function OrderById(req, res) {
+async function orderById(req, res) {
   const orderid = req.params.id;
   const orders = await Order.aggregate([
     {
@@ -198,7 +198,7 @@ async function getTotalPrice(req, res) {
 module.exports = {
   createOrder: createOrder,
   allOrder: allOrder,
-  OrderById: OrderById,
+  orderById: orderById,
   updateOrder: updateOrder,
   getorders: getorders,
   getallorders: getallorders,

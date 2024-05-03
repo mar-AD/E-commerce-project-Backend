@@ -1,9 +1,9 @@
 const express = require("express");
-const Product = require("../models/products");
-const Subcategories = require("../models/subcategories");
+const Product = require("../models/products.js");
+const Subcategories = require("../models/subcategories.js");
 const mongoose = require("mongoose");
 const xss = require("xss");
-const validateUserInput = require("../middlewares/validationMiddleware");
+const validateUserInput = require("../middlewares/validationMiddleware.js");
 
 // create products ==========================
 
