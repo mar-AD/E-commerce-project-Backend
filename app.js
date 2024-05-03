@@ -30,7 +30,7 @@ async function connected() {
 }
 connected();
 
-const customers = require("./routes/CustomerRoutes.js");
+const customers = require("./routes/customerRoutes.js");
 app.use("/v1", customers);
 
 const user = require("./routes/usersRoutes.js");
