@@ -14,7 +14,7 @@ async function createOrder(req, res) {
     const { customerId, orderItems, cartTotalPrice } = req.body;
     const token =
       req.headers.authorization && req.headers.authorization.split(" ")[1];
-
+      console.log(token);
     jwt.verify(token, secretKey, async (err, decoded) => {
       if (err) {
         return res.status(401).json({ error: "Token verification failed" });
