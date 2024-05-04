@@ -224,33 +224,38 @@ async function updateIdCustomer(req, res) {
   try {
     const customer = await Customer.findById(customerId);
 
-    const isPasswordValid = await bcrypt.compare(
-      old_password,
-      customer.password
-    );
-
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid old password" });
+    if (!customer) {
+      return res.status(404).json({ error: "Customer not found" });
     }
 
-    const hashedNewPassword = await bcrypt.hash(new_password, 10);
+    if (old_password) {
+      const isPasswordValid = await bcrypt.compare(old_password, customer.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ error: "Invalid old password" });
+      }
+    }
 
-    customer.first_name = first_name;
-    customer.last_name = last_name;
-    customer.email = email;
-    customer.password = hashedNewPassword;
-
-    await customer.save();
+    if (first_name) customer.first_name = first_name;
+    if (last_name) customer.last_name = last_name;
+    if (email) customer.email = email;
+    if (new_password) {
+      const hashedNewPassword = await bcrypt.hash(new_password, 10);
+      customer.password = hashedNewPassword;
+    }
 
     customer.valid_account = true;
     customer.active = true;
 
+    await customer.save();
+
     res.json(customer);
-    console.log(customer);
+    console.log("Customer updated:", customer);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error updating customer:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
+
 
 async function allCustomer(req, res) {
   try {
