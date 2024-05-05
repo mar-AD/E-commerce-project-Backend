@@ -267,6 +267,72 @@ async function allCustomer(req, res) {
   }
 }
 
+
+//reset passsssssssss================================
+
+async function resetRquist (req, res) {
+    const { email } = req.body;
+    try {
+    const user = await Customer.findOne({ email: email });
+    if (!user) {
+        return res.status(404).json({ message: 'Customer not found' });
+    }
+    const resetToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    user.resetToken = resetToken;
+    user.resetTokenExpiration = Date.now() + 300000; 
+    await user.save();
+    sendEmail.sendResetEmail(user.email, resetToken);
+    return res.status(200).json({ message: 'Password reset email sent successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+// Verify ttoken ================================
+async function verifyResetToken (req, res) {
+    const { token } = req.params;
+    try {
+        const user = await Customer.findOne({
+            resetToken: token,
+            resetTokenExpiration: { $gt: Date.now() },
+        });
+    if (!user) {
+        return res.status(400).json({ message: 'Invalid or expired token' });
+    }
+    return res.status(200).json({ message: 'Token is valid' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+// Set new Passssssssssssssssssssssss=========================
+async function setNewPass (req, res) {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+    try {
+        const user = await Customer.findOne({
+        resetToken: token,
+        resetTokenExpiration: { $gt: Date.now() },
+        });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired token' });
+        }
+        const hashedPass = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPass;
+        user.resetToken = null;
+        user.resetTokenExpiration = null;
+        await user.save();
+
+        return res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 module.exports = {
   createCustomer: createCustomer,
   loginCustumer: loginCustumer,
@@ -278,4 +344,7 @@ module.exports = {
   profileCustomer: profileCustomer,
   updateIdCustomer: updateIdCustomer,
   allCustomer: allCustomer,
+  resetRquist: resetRquist,
+  verifyResetToken: verifyResetToken,
+  setNewPass: setNewPass,
 };
