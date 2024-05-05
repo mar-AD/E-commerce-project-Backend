@@ -281,7 +281,7 @@ async function resetRquist (req, res) {
     user.resetToken = resetToken;
     user.resetTokenExpiration = Date.now() + 300000; 
     await user.save();
-    sendEmail.sendResetEmail(user.email, resetToken);
+    sendEmail.sendResetEmailForCustommer(user.email, resetToken);
     return res.status(200).json({ message: 'Password reset email sent successfully' });
     } catch (error) {
         console.error(error);
