@@ -43,6 +43,13 @@ const productsSchema = new mongoose.Schema({
   },
 },{timestamps: true});
 
+productsSchema.index({ sku: 1 }); 
+productsSchema.index({ product_image: 1 });
+productsSchema.index({ price: 1 });
+productsSchema.index({ product_name: 1 });
+productsSchema.index({ short_description: 1 });
+productsSchema.index({ long_description: 1 });
+
 const products = mongoose.model("Products", productsSchema);
 
 module.exports = products;
