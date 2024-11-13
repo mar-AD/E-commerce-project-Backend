@@ -43,6 +43,7 @@ const productsSchema = new mongoose.Schema({
   },
 },{timestamps: true});
 
+// i add indexing to improve the products card fetching 
 productsSchema.index({ sku: 1 }); 
 productsSchema.index({ product_image: 1 });
 productsSchema.index({ price: 1 });
